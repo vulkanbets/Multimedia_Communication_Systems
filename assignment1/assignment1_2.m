@@ -2,7 +2,7 @@ clc
 clear all
 close all
 
-rgbImage = imread('Flooded_house.jpg', 'jpg');  % 
+rgbImage = imread('Flooded_house.jpg', 'jpg');  % Load Image
 figure(1);                                      % Original R_G_B
 subplot(2,2,1);                                 % Image with plot
 imshow(rgbImage);                               % 
