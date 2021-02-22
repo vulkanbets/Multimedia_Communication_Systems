@@ -57,3 +57,16 @@ imshow(up_Cb);                                          % In one figure
 title('Upsampled Cb Band using Row Replication');       % 
 % This is to display the Upsampled images
 
+
+Folder = '.\';
+File   = 'UpsampledCbRowReplicate.jpg';
+Img    = up_Cr;
+imwrite(Img, fullfile(Folder, File));
+
+Folder = '.\';
+File   = 'UpsampledCrRowReplicate.jpg';
+Img    = up_Cb;
+imwrite(Img, fullfile(Folder, File));
+
+
+

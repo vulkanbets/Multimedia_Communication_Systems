@@ -17,6 +17,7 @@ green = rgbImage(:,:,2);                    % assign green components to green v
 blue = rgbImage(:,:,3);                     % assign blue components to blue variable
 black = zeros(rows, columns, 'uint8');      % assign black components to black variable
 
+
 Red_band = cat(3, red, black, black);       % This concatinates only the
 subplot(2, 2, 2);                           % red pixels and leaves the
 imshow(Red_band);                           % other components black
@@ -31,3 +32,37 @@ Blue_band = cat(3, black, black, blue);     % This concatinates only the
 subplot(2, 2, 4);                           % blue pixels and leaves the
 imshow(Blue_band);                          % other components black
 title('Blue Band');                         % Plot and show the Red Band
+
+
+
+Folder = '.\';
+File   = 'Original RGB Image.jpg';
+Img    = rgbImage;
+imwrite(Img, fullfile(Folder, File));
+
+Folder = '.\';
+File   = 'Red Band.jpg';
+Img    = Red_band;
+imwrite(Img, fullfile(Folder, File));
+
+Folder = '.\';
+File   = 'Green Band.jpg';
+Img    = Green_band;
+imwrite(Img, fullfile(Folder, File));
+
+Folder = '.\';
+File   = 'Blue Band.jpg';
+Img    = Blue_band;
+imwrite(Img, fullfile(Folder, File));
+
+
+
+
+
+
+
+
+
+
+
+

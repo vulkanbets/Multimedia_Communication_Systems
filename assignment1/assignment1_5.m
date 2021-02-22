@@ -35,3 +35,14 @@ subplot(1, 2, 2);                   %
 imshow(sub_Cb);                     % In one figure
 title('Cb 4:2:0 Subsampling');      % 
 
+
+Folder = '.\';
+File   = 'SubCr.jpg';
+Img    = sub_Cr;
+imwrite(Img, fullfile(Folder, File));
+
+Folder = '.\';
+File   = 'SubCb.jpg';
+Img    = sub_Cb;
+imwrite(Img, fullfile(Folder, File));
+

@@ -85,18 +85,10 @@ for i = 1:1:rows
     y = 1;
 end                     % Row replication
 
-interRgbImage = cat(3, Y, up_Cr, up_Cb);
-interRgbImage = ycbcr2rgb(interRgbImage);
-repliRgbImage = cat(3, Y, up_Cr2, up_Cb2);
-repliRgbImage = ycbcr2rgb(repliRgbImage);
+interRgbImage = cat(3, Y, up_Cr, up_Cb);        % This converts 
+interRgbImage = ycbcr2rgb(interRgbImage);       % both Upsampled YCbCr
+repliRgbImage = cat(3, Y, up_Cr2, up_Cb2);      % images back to rgb
+repliRgbImage = ycbcr2rgb(repliRgbImage);       % Format
 
-%  This is to display the Upsampled images
-figure;                                                                         % 
-subplot(1, 2, 1);                                                               % This code displays both the
-imshow(interRgbImage);                                                          % 
-title('Upsampled image using Interpolation and converted back to RGB:');        % Cr and Cb Upsampled bands
-subplot(1, 2, 2);                                                               % 
-imshow(repliRgbImage);                                                          % In one figure
-title('Upsampled image using Col Replication and converted back to RGB:');      % 
-% This is to display the Upsampled images
+
 

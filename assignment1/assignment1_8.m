@@ -15,6 +15,9 @@ sub_Cr = zeros( (rows/2), (columns/2), 'uint8' );   % fill subsampled array with
 sub_Cb = zeros( (rows/2), (columns/2), 'uint8' );   % fill subsampled array with 0's
 up_Cr = zeros( (rows), (columns), 'uint8' );        % fill Upsampled array with 0's
 up_Cb = zeros( (rows), (columns), 'uint8' );        % fill Upsampled array with 0's
+up_Cr2 = zeros( (rows), (columns), 'uint8' );       % fill Upsampled array with 0's
+up_Cb2 = zeros( (rows), (columns), 'uint8' );       % fill Upsampled array with 0's
+
 
 x = 1;                                  % Rows
 y = 1;                                  % Columns
@@ -28,7 +31,7 @@ for i = 1:2:rows
     y = 1;
 end
 
-
+%  Linear Interpolation
 x = 1;                                  % Rows
 y = 1;                                  % Columns
 for i = 1:1:rows
@@ -60,28 +63,50 @@ for i = 1:1:rows
     end
     if( mod(i, 2) == 0 ) x = x + 1; end
     y = 1;
-end
+end             % Linear Interpolation
+
+
+% Row Replication
+x = 1;                                  % Rows
+y = 1;                                  % Columns
+for i = 1:1:rows
+    for j = 1:1:columns
+        % Upsampling Linear Interpolation
+        if( mod(i, 2) == 1 )                % Odd Row
+            up_Cr2(i, j) = sub_Cr(x, y);
+            up_Cb2(i, j) = sub_Cb(x, y);
+        else                                % Even Row
+            up_Cr2(i, j) = up_Cr2((i - 1), j);
+            up_Cb2(i, j) = up_Cb2((i - 1), j);
+        end
+        if( mod(j, 2) == 0 ) y = y + 1; end
+    end
+    if( mod(i, 2) == 0 ) x = x + 1; end
+    y = 1;
+end                     % Row replication
+
+interRgbImage = cat(3, Y, up_Cr, up_Cb);        % This converts 
+interRgbImage = ycbcr2rgb(interRgbImage);       % both Upsampled YCbCr
+repliRgbImage = cat(3, Y, up_Cr2, up_Cb2);      % images back to rgb
+repliRgbImage = ycbcr2rgb(repliRgbImage);       % Format
 
 %  This is to display the Upsampled images
-figure;                                                 % 
-subplot(1, 2, 1);                                       % This code displays both the
-imshow(up_Cr);                                          % 
-title('Upsampled Cr Band using Interpolation');         % Cr and Cb Upsampled bands
-subplot(1, 2, 2);                                       % 
-imshow(up_Cb);                                          % In one figure
-title('Upsampled Cb Band using Interpolation');         % 
+figure;                                                                         % 
+subplot(1, 2, 1);                                                               % This code displays both the
+imshow(interRgbImage);                                                          % 
+title('Upsampled image using Interpolation and converted back to RGB:');        % Cr and Cb Upsampled bands
+subplot(1, 2, 2);                                                               % 
+imshow(repliRgbImage);                                                          % In one figure
+title('Upsampled image using Col Replication and converted back to RGB:');      % 
 % This is to display the Upsampled images
 
 Folder = '.\';
-File   = 'UpsampledCbInterpolation.jpg';
-Img    = up_Cr;
+File   = 'interpolationRgb.jpg';
+Img    = interRgbImage;
 imwrite(Img, fullfile(Folder, File));
 
 Folder = '.\';
-File   = 'UpsampledCrInterpolation.jpg';
-Img    = up_Cb;
+File   = 'replicationRgb.jpg';
+Img    = repliRgbImage;
 imwrite(Img, fullfile(Folder, File));
-
-
-
 
