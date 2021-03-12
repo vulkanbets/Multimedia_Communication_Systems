@@ -27,20 +27,29 @@ for i = 1:2:rows
 end
 
 
+
 %  Encoder
 %  Compute the 8x8 block DCT transform coefficients of the luminance and
 %  chrominance components of the image.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-y_dct = blkproc(Y, [8 8], @dct2);               % This is the DCT of the
+%  Prepare (normalize) all the matrices for transformation
+y_norm = int16(Y);                  % Normalize Y and subtract
+y_norm = y_norm - 128;              % 128 from all values in matrix
+sub_cr_norm = int16(sub_Cr);        % Normalize sub-sampled Cr and subtract
+sub_cr_norm = sub_cr_norm - 128;    % 128 from all values in matrix
+sub_cb_norm = int16(sub_Cb);        % Normalize sub-sampled Cb and subtract
+sub_cb_norm = sub_cb_norm - 128;    % 128 from all values in matrix
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+y_dct = blkproc(y_norm, [8 8], @dct2);          % This is the DCT of the
 %round off                                      % (Y) Luminance Component
 y_dct = fix(y_dct);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-sub_Cr_dct = blkproc(sub_Cr, [8 8], @dct2);     % This is the DCT of the
-%round off                                      % Sub-sampled Cr-Band
+sub_Cr_dct = blkproc(sub_cr_norm, [8 8], @dct2);    % This is the DCT of the
+%round off                                          % Sub-sampled Cr-Band
 sub_Cr_dct = fix(sub_Cr_dct);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-sub_Cb_dct = blkproc(sub_Cb, [8 8], @dct2);     % This is the DCT of the
-%round off                                      % Sub-sampled Cb-Band
+sub_Cb_dct = blkproc(sub_cb_norm, [8 8], @dct2);    % This is the DCT of the
+%round off                                          % Sub-sampled Cb-Band
 sub_Cb_dct = fix(sub_Cb_dct);
 
 y_quantization_matrix = [16 11 10 16 24 40 51 61;
@@ -67,33 +76,46 @@ cb_cr_quantization_matrix = [17 18 24 47 99 99 99 99;
 
 
 
-figure;
-subplot(2, 2, [1, 2]);
-imshow(y_dct);
-subplot(2, 2, 3);
-imshow(sub_Cr_dct);
-subplot(2, 2, 4);
-imshow(sub_Cb_dct);
+
 
 
 
 %  Decoder
 %  Reconstruct the image by computing Inverse DCT coefficients.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% y_reconstructed = blkproc(y_dct, [8 8], @idct2);
-% %round off
-% y_reconstructed = fix(y_reconstructed);
-% y_reconstructed = uint8(y_reconstructed);
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% sub_Cr_dct_reconstructed = blkproc(sub_Cr_dct, [8 8], @idct2);
-% %round off
-% sub_Cr_dct_reconstructed = fix(sub_Cr_dct_reconstructed);
-% sub_Cr_dct_reconstructed = uint8(sub_Cr_dct_reconstructed);
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% sub_Cb_dct_reconstructed = blkproc(sub_Cb_dct, [8 8], @idct2);
-% %round off
-% sub_Cb_dct_reconstructed = fix(sub_Cb_dct_reconstructed);
-% sub_Cb_dct_reconstructed = uint8(sub_Cb_dct_reconstructed);
+y_reconstructed = blkproc(y_dct, [8 8], @idct2);
+%round off
+y_reconstructed = fix(y_reconstructed);
+% Convert back to jpeg format
+y_reconstructed = y_reconstructed + 128;
+y_reconstructed = uint8(y_reconstructed);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+sub_Cr_dct_reconstructed = blkproc(sub_Cr_dct, [8 8], @idct2);
+%round off
+sub_Cr_dct_reconstructed = fix(sub_Cr_dct_reconstructed);
+% Convert back to jpeg format
+sub_Cr_dct_reconstructed = sub_Cr_dct_reconstructed + 128;
+sub_Cr_dct_reconstructed = uint8(sub_Cr_dct_reconstructed);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+sub_Cb_dct_reconstructed = blkproc(sub_Cb_dct, [8 8], @idct2);
+%round off
+sub_Cb_dct_reconstructed = fix(sub_Cb_dct_reconstructed);
+% Convert back to jpeg format
+sub_Cb_dct_reconstructed = sub_Cb_dct_reconstructed + 128;
+sub_Cb_dct_reconstructed = uint8(sub_Cb_dct_reconstructed);
+
+
+
+
+figure;
+subplot(2, 2, [1, 2]);
+imshow(y_reconstructed);
+subplot(2, 2, 3);
+imshow(sub_Cr_dct_reconstructed);
+subplot(2, 2, 4);
+imshow(sub_Cb_dct_reconstructed);
+
+
 
 
 
