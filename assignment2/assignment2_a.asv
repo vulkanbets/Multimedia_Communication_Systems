@@ -28,54 +28,54 @@ end
 
 
 %  Encoder
-%  Compute the 8x8 bloack DCT transform coefficients of the luminance and
-%  chrominance components of the image. 
-y_dct = blkproc(Y, [8 8], @dct2);
-%round off
+%  Compute the 8x8 block DCT transform coefficients of the luminance and
+%  chrominance components of the image.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+y_dct = blkproc(Y, [8 8], @dct2);               % This is the DCT of the
+%round off                                      % (Y) Luminance Component
 y_dct = fix(y_dct);
-sub_Cr_dct = blkproc(sub_Cr, [8 8], @dct2);
-%round off
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+sub_Cr_dct = blkproc(sub_Cr, [8 8], @dct2);     % This is the DCT of the
+%round off                                      % Sub-sampled Cr-Band
 sub_Cr_dct = fix(sub_Cr_dct);
-sub_Cb_dct = blkproc(sub_Cb, [8 8], @dct2);
-%round off
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+sub_Cb_dct = blkproc(sub_Cb, [8 8], @dct2);     % This is the DCT of the
+%round off                                      % Sub-sampled Cb-Band
 sub_Cb_dct = fix(sub_Cb_dct);
 
-% figure;                                 % 
-% subplot(2, 2, [1, 2]);                  %  This code displays the 
-% imshow(y_dct);                          %   Luminence (Y) DCT
-% title('(Y) Luminance DCT');             % 
-% subplot(2, 2, 3);                       % This code displays both the
-% imshow(sub_Cr_dct);                     % 
-% title('Cr 4:2:0 Subsampling DCT');      % Cr and Cb Subsampled bands
-% subplot(2, 2, 4);                       % 
-% imshow(sub_Cb_dct);                     % In one figure
-% title('Cb 4:2:0 Subsampling DCT');      % 
+
+
+y_quantization_matrix = [
+
+
+
+
+
+
+
+
+
 
 
 %  Decoder
 %  Reconstruct the image by computing Inverse DCT coefficients.
-y_reconstructed = idct2(y_dct)
-%round off
-y_reconstructed = fix(y_reconstructed);
-
-figure;                                 % 
-subplot(2, 2, [1, 2]);                  %  This code displays the
-imshow(y_dct);                          %   Luminence (Y) DCT
-title('Reconstructed (Y) Luminance DCT');             % 
-% subplot(2, 2, 3);                       % This code displays both the
-% imshow(sub_Cr_dct);                     % 
-% title('Cr 4:2:0 Subsampling DCT');      % Cr and Cb Subsampled bands
-% subplot(2, 2, 4);                       % 
-% imshow(sub_Cb_dct);                     % In one figure
-% title('Cb 4:2:0 Subsampling DCT');      % 
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% y_reconstructed = blkproc(y_dct, [8 8], @idct2);
+% %round off
+% y_reconstructed = fix(y_reconstructed);
+% y_reconstructed = uint8(y_reconstructed);
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% sub_Cr_dct_reconstructed = blkproc(sub_Cr_dct, [8 8], @idct2);
+% %round off
+% sub_Cr_dct_reconstructed = fix(sub_Cr_dct_reconstructed);
+% sub_Cr_dct_reconstructed = uint8(sub_Cr_dct_reconstructed);
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% sub_Cb_dct_reconstructed = blkproc(sub_Cb_dct, [8 8], @idct2);
+% %round off
+% sub_Cb_dct_reconstructed = fix(sub_Cb_dct_reconstructed);
+% sub_Cb_dct_reconstructed = uint8(sub_Cb_dct_reconstructed);
 
 
-
-
-% y_dct = int16(y_dct);
 
 % figure;                             % 
 % subplot(2, 2, [1, 2]);              % This code displays the Luminence (Y)
