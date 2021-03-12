@@ -23,20 +23,20 @@ subplot(2, 2, 4);
 imshow(Cr);
 title('Cr Component');
 
-Folder = '.\';
-File   = 'Luminance (Y) Component.jpg';
-Img    = Y;
-imwrite(Img, fullfile(Folder, File));
-
-Folder = '.\';
-File   = 'Cb Component.jpg';
-Img    = Cb;
-imwrite(Img, fullfile(Folder, File));
-
-Folder = '.\';
-File   = 'Cr Component.jpg';
-Img    = Cr;
-imwrite(Img, fullfile(Folder, File));
+% Folder = '.\';
+% File   = 'Luminance (Y) Component.jpg';
+% Img    = Y;
+% imwrite(Img, fullfile(Folder, File));
+% 
+% Folder = '.\';
+% File   = 'Cb Component.jpg';
+% Img    = Cb;
+% imwrite(Img, fullfile(Folder, File));
+% 
+% Folder = '.\';
+% File   = 'Cr Component.jpg';
+% Img    = Cr;
+% imwrite(Img, fullfile(Folder, File));
 
 
 
