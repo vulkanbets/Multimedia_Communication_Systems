@@ -83,37 +83,36 @@ cb_cr_quantization_matrix = [17 18 24 47 99 99 99 99;
 %  Decoder
 %  Reconstruct the image by computing Inverse DCT coefficients.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-y_reconstructed = blkproc(y_dct, [8 8], @idct2);
-%round off
-y_reconstructed = fix(y_reconstructed);
-% Convert back to jpeg format
-y_reconstructed = y_reconstructed + 128;
-y_reconstructed = uint8(y_reconstructed);
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-sub_Cr_dct_reconstructed = blkproc(sub_Cr_dct, [8 8], @idct2);
-%round off
-sub_Cr_dct_reconstructed = fix(sub_Cr_dct_reconstructed);
-% Convert back to jpeg format
-sub_Cr_dct_reconstructed = sub_Cr_dct_reconstructed + 128;
-sub_Cr_dct_reconstructed = uint8(sub_Cr_dct_reconstructed);
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-sub_Cb_dct_reconstructed = blkproc(sub_Cb_dct, [8 8], @idct2);
-%round off
-sub_Cb_dct_reconstructed = fix(sub_Cb_dct_reconstructed);
-% Convert back to jpeg format
-sub_Cb_dct_reconstructed = sub_Cb_dct_reconstructed + 128;
-sub_Cb_dct_reconstructed = uint8(sub_Cb_dct_reconstructed);
+% y_reconstructed = blkproc(y_dct, [8 8], @idct2);
+% %round off
+% y_reconstructed = fix(y_reconstructed);
+% % Convert back to jpeg format
+% y_reconstructed = y_reconstructed + 128;
+% y_reconstructed = uint8(y_reconstructed);
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% sub_Cr_dct_reconstructed = blkproc(sub_Cr_dct, [8 8], @idct2);
+% %round off
+% sub_Cr_dct_reconstructed = fix(sub_Cr_dct_reconstructed);
+% % Convert back to jpeg format
+% sub_Cr_dct_reconstructed = sub_Cr_dct_reconstructed + 128;
+% sub_Cr_dct_reconstructed = uint8(sub_Cr_dct_reconstructed);
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% sub_Cb_dct_reconstructed = blkproc(sub_Cb_dct, [8 8], @idct2);
+% %round off
+% sub_Cb_dct_reconstructed = fix(sub_Cb_dct_reconstructed);
+% % Convert back to jpeg format
+% sub_Cb_dct_reconstructed = sub_Cb_dct_reconstructed + 128;
+% sub_Cb_dct_reconstructed = uint8(sub_Cb_dct_reconstructed);
 
 
 
-
-figure;
-subplot(2, 2, [1, 2]);
-imshow(y_reconstructed);
-subplot(2, 2, 3);
-imshow(sub_Cr_dct_reconstructed);
-subplot(2, 2, 4);
-imshow(sub_Cb_dct_reconstructed);
+% figure;
+% subplot(2, 2, [1, 2]);
+% imshow(y_reconstructed);
+% subplot(2, 2, 3);
+% imshow(sub_Cr_dct_reconstructed);
+% subplot(2, 2, 4);
+% imshow(sub_Cb_dct_reconstructed);
 
 
 

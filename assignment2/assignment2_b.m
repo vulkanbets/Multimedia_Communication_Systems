@@ -26,8 +26,6 @@ for i = 1:2:rows
     y = 1;
 end
 
-
-
 %  Encoder
 %  Compute the 8x8 block DCT transform coefficients of the luminance and
 %  chrominance components of the image.
@@ -71,8 +69,57 @@ cb_cr_quantization_matrix = [17 18 24 47 99 99 99 99;
                              99 99 99 99 99 99 99 99;];
 
 
+% Quantize the Y (Luminance) by dividing by the (Y) quantization Matrix
+% (Y) Luminance quantization Matrix
+myfun = @(block_struct) rdivide(block_struct.data, y_quantization_matrix);
+y_quantized = blockproc(y_dct, [8 8], myfun);
+%round off
+y_quantized = fix(y_quantized);
+% convert to 32-bit
+y_quantized = int32(y_quantized);
+
+% Quantize the Cb Band by dividing by the Cb Cr quantization Matrix
+sub_Cb_dct_padded = padarray(sub_Cb_dct, 4, 0, 'post');
+myfun2 = @(block_struct) rdivide(block_struct.data, cb_cr_quantization_matrix);
+sub_Cb_quantized = blockproc(sub_Cb_dct_padded, [8 8], myfun2);
+%round off
+sub_Cb_quantized = fix(sub_Cb_quantized);
+% convert to 32-bit
+sub_Cb_quantized = int32(sub_Cb_quantized);
 
 
+% Quantize the Cr Band by dividing by the Cb Cr quantization Matrix
+sub_Cr_dct_padded = padarray(sub_Cr_dct, 4, 0, 'post');
+myfun2 = @(block_struct) rdivide(block_struct.data, cb_cr_quantization_matrix);
+sub_Cr_quantized = blockproc(sub_Cr_dct_padded, [8 8], myfun2);
+%round off
+sub_Cr_quantized = fix(sub_Cr_quantized);
+% convert to 32-bit
+sub_Cr_quantized = int32(sub_Cr_quantized);
+
+
+
+%%%     Print DC DCT coefficients of first 2 blocks in the 6th row from top
+%%% of (Y) Luminance Coefficient
+
+%%% End Print DC DCT coefficients of first 2 blocks in the 6th row from top
+%%% of (Y) Luminance Coefficient
+
+
+%%% Begin zig zag and print of (Y) Luminance coefficient scan
+
+%%% End zig zag and print of (Y) Luminance coefficient scan
+
+
+
+
+% figure;
+% subplot(2, 2, [1, 2]);
+% imshow(y_dct);
+% subplot(2, 2, 3);
+% imshow(sub_Cb_dct);
+% subplot(2, 2, 4);
+% imshow(sub_Cr_dct);
 
 
 
@@ -83,34 +130,36 @@ cb_cr_quantization_matrix = [17 18 24 47 99 99 99 99;
 %  Decoder
 %  Reconstruct the image by computing Inverse DCT coefficients.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-y_reconstructed = blkproc(y_dct, [8 8], @idct2);
-%round off
-y_reconstructed = fix(y_reconstructed);
-y_reconstructed = y_reconstructed + 128;
-y_reconstructed = uint8(y_reconstructed);
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-sub_Cr_dct_reconstructed = blkproc(sub_Cr_dct, [8 8], @idct2);
-%round off
-sub_Cr_dct_reconstructed = fix(sub_Cr_dct_reconstructed);
-sub_Cr_dct_reconstructed = sub_Cr_dct_reconstructed + 128;
-sub_Cr_dct_reconstructed = uint8(sub_Cr_dct_reconstructed);
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-sub_Cb_dct_reconstructed = blkproc(sub_Cb_dct, [8 8], @idct2);
-%round off
-sub_Cb_dct_reconstructed = fix(sub_Cb_dct_reconstructed);
-sub_Cb_dct_reconstructed = sub_Cb_dct_reconstructed + 128;
-sub_Cb_dct_reconstructed = uint8(sub_Cb_dct_reconstructed);
+% y_reconstructed = blkproc(y_dct, [8 8], @idct2);
+% %round off
+% y_reconstructed = fix(y_reconstructed);
+% % Convert back to jpeg format
+% y_reconstructed = y_reconstructed + 128;
+% y_reconstructed = uint8(y_reconstructed);
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% sub_Cr_dct_reconstructed = blkproc(sub_Cr_dct, [8 8], @idct2);
+% %round off
+% sub_Cr_dct_reconstructed = fix(sub_Cr_dct_reconstructed);
+% % Convert back to jpeg format
+% sub_Cr_dct_reconstructed = sub_Cr_dct_reconstructed + 128;
+% sub_Cr_dct_reconstructed = uint8(sub_Cr_dct_reconstructed);
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% sub_Cb_dct_reconstructed = blkproc(sub_Cb_dct, [8 8], @idct2);
+% %round off
+% sub_Cb_dct_reconstructed = fix(sub_Cb_dct_reconstructed);
+% % Convert back to jpeg format
+% sub_Cb_dct_reconstructed = sub_Cb_dct_reconstructed + 128;
+% sub_Cb_dct_reconstructed = uint8(sub_Cb_dct_reconstructed);
 
 
 
-
-figure;
-subplot(2, 2, [1, 2]);
-imshow(y_reconstructed);
-subplot(2, 2, 3);
-imshow(sub_Cr_dct);
-subplot(2, 2, 4);
-imshow(sub_Cb_dct);
+% figure;
+% subplot(2, 2, [1, 2]);
+% imshow(y_reconstructed);
+% subplot(2, 2, 3);
+% imshow(sub_Cr_dct_reconstructed);
+% subplot(2, 2, 4);
+% imshow(sub_Cb_dct_reconstructed);
 
 
 
