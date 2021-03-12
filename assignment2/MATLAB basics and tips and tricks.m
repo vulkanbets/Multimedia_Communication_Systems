@@ -444,7 +444,3 @@ imshow(my_DCT);
 
 
 
-
-
-
-
