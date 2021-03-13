@@ -143,8 +143,10 @@ for k = 1 : 64
 end
 %%% End zig zag method and print of (Y) Luminance coefficient scan
 
-sprintf( ' 1st block DC DCT coefficient  =  %d ', block1(1, 1) )
-sprintf( ' 2nd block DC DCT coefficient  =  %d ', block2(1, 1) )
+disp( ' 1st block DC DCT coefficient');
+disp(block1(1, 1));
+disp( ' 2nd block DC DCT coefficient');
+disp(block2(1, 1));
 disp( 'These are the zig-zagged scanned coefficients for the 1st block')
 disp(zigzag_coefficients_1)
 disp( 'These are the zig-zagged scanned coefficients for the 2nd block')

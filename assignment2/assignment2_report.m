@@ -206,10 +206,10 @@ Reconstructed_RgbImage = ycbcr2rgb(Reconstructed_RgbImage);
 % title('Original RGB Image');
 
 %  This is to display the error image
-% error_image = imsubtract(rgbImage, Reconstructed_RgbImage)
-% figure;
-% imshow(error_image);
-% title('Error Image');
+error_image = imsubtract(rgbImage, Reconstructed_RgbImage)
+figure;
+imshow(error_image);
+title('Error Image');
 
 
 
