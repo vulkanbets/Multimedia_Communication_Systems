@@ -99,16 +99,79 @@ sub_Cr_quantized = int32(sub_Cr_quantized);
 
 
 
-%%%     Print DC DCT coefficients of first 2 blocks in the 6th row from top
-%%% of (Y) Luminance Coefficient
+%%% Assign the blocks to be shown for the report
+block1 = y_quantized(41:48, 1:8)
+block2 = y_quantized(41:48, 9:16);
+%%% Assign the blocks to be shown for the report
 
-%%% End Print DC DCT coefficients of first 2 blocks in the 6th row from top
-%%% of (Y) Luminance Coefficient
 
 
-%%% Begin zig zag and print of (Y) Luminance coefficient scan
 
-%%% End zig zag and print of (Y) Luminance coefficient scan
+% # Program to print matrix in Zig-zag pattern 
+%   
+% matrix =[ 
+%             [ 1, 2, 3,], 
+%             [ 4, 5, 6 ], 
+%             [ 7, 8, 9 ], 
+%         ] 
+% rows=3
+% columns=3
+%     
+% solution=[[] for i in range(rows+columns-1)] 
+%   
+% for i in range(rows): 
+%     for j in range(columns): 
+%         sum=i+j 
+%         if(sum%2 ==0): 
+%   
+%             #add at beginning 
+%             solution[sum].insert(0,matrix[i][j]) 
+%         else: 
+%   
+%             #add at end of the list 
+%             solution[sum].append(matrix[i][j]) 
+%           
+%               
+% # print the solution as it as 
+% for i in solution: 
+%     for j in i: 
+%         print(j,end=" ")
+
+
+
+
+
+
+%%% Begin zig zag method and print of (Y) Luminance coefficient scan
+row = uint8(1);
+column = uint8(1);
+flag = 0;  %  Up = 1;  Down = 0
+zigzag_coefficients_1 = zeros(1, 64, 'uint8');
+zigzag_coefficients_1 = zeros(1, 64, 'uint8');
+for k = 1 : 64
+    if ( ( row == 1 || row == 8) && (column == 1 || column == 3 || column == 5 || column == 7 ) ) % Move Right
+        sprintf('row = %d  column = %d,  Moving Right', row, column)
+        column = column + 1;
+    elseif ( (row == 2 || row == 4 || row == 6)  &&  (column == 1 || column == 8) )   % Move Down
+        sprintf('row = %d  column = %d,  Moving Down', row, column)
+        row = row + 1;
+    elseif(k == 64)
+        sprintf('row = %d  column = %d,  End Of File', row, column)
+    else                    % Either move diagonal Up-Right or Down-Left
+        if(flag == 0)       % Move diagonal Down-Left
+            sprintf('row = %d  column = %d,  Moving Down-Left', row, column)
+            row = row + 1;
+            column = column - 1;
+            if(column == 1 || row == 8 && (column == 3 || column == 5 || column == 7)) flag = 1; end
+        else                % Move diagonal Up-Right
+            sprintf('row = %d  column = %d,  Moving Up-Right', row, column)
+            row = row - 1;
+            column = column + 1;
+            if( row == 1 || column == 8 && (row == 2 || row == 4 || row == 6) ) flag = 0; end
+        end
+    end
+end
+%%% End zig zag method and print of (Y) Luminance coefficient scan
 
 
 
