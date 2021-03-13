@@ -120,60 +120,34 @@ inverse_sub_Cr_quantized = inverse_sub_Cr_quantized(1:268, 1:352);
 
 %  Reconstruct the image by computing Inverse DCT coefficients.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% y_reconstructed = blkproc(y_dct, [8 8], @idct2);
-% %round off
-% y_reconstructed = fix(y_reconstructed);
-% % Convert back to jpeg format
-% y_reconstructed = y_reconstructed + 128;
-% y_reconstructed = uint8(y_reconstructed);
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% sub_Cr_dct_reconstructed = blkproc(sub_Cr_dct, [8 8], @idct2);
-% %round off
-% sub_Cr_dct_reconstructed = fix(sub_Cr_dct_reconstructed);
-% % Convert back to jpeg format
-% sub_Cr_dct_reconstructed = sub_Cr_dct_reconstructed + 128;
-% sub_Cr_dct_reconstructed = uint8(sub_Cr_dct_reconstructed);
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% sub_Cb_dct_reconstructed = blkproc(sub_Cb_dct, [8 8], @idct2);
-% %round off
-% sub_Cb_dct_reconstructed = fix(sub_Cb_dct_reconstructed);
-% % Convert back to jpeg format
-% sub_Cb_dct_reconstructed = sub_Cb_dct_reconstructed + 128;
-% sub_Cb_dct_reconstructed = uint8(sub_Cb_dct_reconstructed);
+y_reconstructed = blkproc(inverse_y_quantized, [8 8], @idct2);
+%round off
+y_reconstructed = fix(y_reconstructed);
+% Convert back to jpeg format
+y_reconstructed = y_reconstructed + 128;
+y_reconstructed = uint8(y_reconstructed);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+sub_Cr_dct_reconstructed = blkproc(inverse_sub_Cr_quantized, [8 8], @idct2);
+%round off
+sub_Cr_dct_reconstructed = fix(sub_Cr_dct_reconstructed);
+% Convert back to jpeg format
+sub_Cr_dct_reconstructed = sub_Cr_dct_reconstructed + 128;
+sub_Cr_dct_reconstructed = uint8(sub_Cr_dct_reconstructed);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+sub_Cb_dct_reconstructed = blkproc(inverse_sub_Cb_quantized, [8 8], @idct2);
+%round off
+sub_Cb_dct_reconstructed = fix(sub_Cb_dct_reconstructed);
+% Convert back to jpeg format
+sub_Cb_dct_reconstructed = sub_Cb_dct_reconstructed + 128;
+sub_Cb_dct_reconstructed = uint8(sub_Cb_dct_reconstructed);
 
 
 
-% figure;
-% subplot(2, 2, [1, 2]);
-% imshow(y_reconstructed);
-% subplot(2, 2, 3);
-% imshow(sub_Cr_dct_reconstructed);
-% subplot(2, 2, 4);
-% imshow(sub_Cb_dct_reconstructed);
-
-
-
-
-
-% figure;                             % 
-% subplot(2, 2, [1, 2]);              % This code displays the Luminence (Y)
-% imshow(Y);                          % 
-% title('(Y) Luminance');             % 
-% subplot(2, 2, 3);                   % This code displays both the
-% imshow(sub_Cr);                     % 
-% title('Cr 4:2:0 Subsampling');      % Cr and Cb Subsampled bands
-% subplot(2, 2, 4);                   % 
-% imshow(sub_Cb);                     % In one figure
-% title('Cb 4:2:0 Subsampling');      % 
-
-
-% Folder = '.\';
-% File   = 'SubCr.jpg';
-% Img    = sub_Cr;
-% imwrite(Img, fullfile(Folder, File));
-% 
-% Folder = '.\';
-% File   = 'SubCb.jpg';
-% Img    = sub_Cb;
-% imwrite(Img, fullfile(Folder, File));
+figure;
+subplot(2, 2, [1, 2]);
+imshow(y_reconstructed);
+subplot(2, 2, 3);
+imshow(sub_Cr_dct_reconstructed);
+subplot(2, 2, 4);
+imshow(sub_Cb_dct_reconstructed);
 

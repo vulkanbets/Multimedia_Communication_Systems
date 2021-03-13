@@ -120,60 +120,89 @@ inverse_sub_Cr_quantized = inverse_sub_Cr_quantized(1:268, 1:352);
 
 %  Reconstruct the image by computing Inverse DCT coefficients.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% y_reconstructed = blkproc(y_dct, [8 8], @idct2);
-% %round off
-% y_reconstructed = fix(y_reconstructed);
-% % Convert back to jpeg format
-% y_reconstructed = y_reconstructed + 128;
-% y_reconstructed = uint8(y_reconstructed);
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% sub_Cr_dct_reconstructed = blkproc(sub_Cr_dct, [8 8], @idct2);
-% %round off
-% sub_Cr_dct_reconstructed = fix(sub_Cr_dct_reconstructed);
-% % Convert back to jpeg format
-% sub_Cr_dct_reconstructed = sub_Cr_dct_reconstructed + 128;
-% sub_Cr_dct_reconstructed = uint8(sub_Cr_dct_reconstructed);
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% sub_Cb_dct_reconstructed = blkproc(sub_Cb_dct, [8 8], @idct2);
-% %round off
-% sub_Cb_dct_reconstructed = fix(sub_Cb_dct_reconstructed);
-% % Convert back to jpeg format
-% sub_Cb_dct_reconstructed = sub_Cb_dct_reconstructed + 128;
-% sub_Cb_dct_reconstructed = uint8(sub_Cb_dct_reconstructed);
+y_reconstructed = blkproc(inverse_y_quantized, [8 8], @idct2);
+%round off
+y_reconstructed = fix(y_reconstructed);
+% Convert back to jpeg format
+y_reconstructed = y_reconstructed + 128;
+y_reconstructed = uint8(y_reconstructed);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+sub_Cr_dct_reconstructed = blkproc(inverse_sub_Cr_quantized, [8 8], @idct2);
+%round off
+sub_Cr_dct_reconstructed = fix(sub_Cr_dct_reconstructed);
+% Convert back to jpeg format
+sub_Cr_dct_reconstructed = sub_Cr_dct_reconstructed + 128;
+sub_Cr_dct_reconstructed = uint8(sub_Cr_dct_reconstructed);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+sub_Cb_dct_reconstructed = blkproc(inverse_sub_Cb_quantized, [8 8], @idct2);
+%round off
+sub_Cb_dct_reconstructed = fix(sub_Cb_dct_reconstructed);
+% Convert back to jpeg format
+sub_Cb_dct_reconstructed = sub_Cb_dct_reconstructed + 128;
+sub_Cb_dct_reconstructed = uint8(sub_Cb_dct_reconstructed);
 
 
 
+up_Cr = zeros( (rows), (columns), 'uint8' );        % fill Upsampled array with 0's
+up_Cb = zeros( (rows), (columns), 'uint8' );        % fill Upsampled array with 0's
+x = 1;                                  % Rows
+y = 1;                                  % Columns
+for i = 1:1:rows
+    for j = 1:1:columns
+        % Upsampling Linear Interpolation
+        if( mod(i, 2) == 1 )                % Odd Row
+            if( mod(j, 2) == 1 )            % Odd Row Odd Column
+                up_Cr(i, j) = sub_Cr_dct_reconstructed(x, y);
+                up_Cb(i, j) = sub_Cb_dct_reconstructed(x, y);
+            else                            % Odd Row Even Column
+                if(j == columns)
+                    up_Cr(i, j) = sub_Cr_dct_reconstructed(x, y);     % Last column of pixels (edge case)
+                    up_Cb(i, j) = sub_Cb_dct_reconstructed(x, y);     % Last column of pixels (edge case)
+                else
+                    up_Cr(i, j) = (sub_Cr_dct_reconstructed(x, y))/2 + (sub_Cr_dct_reconstructed(x, y+1))/2;    % average of left and right pixels
+                    up_Cb(i, j) = (sub_Cb_dct_reconstructed(x, y))/2 + (sub_Cb_dct_reconstructed(x, y+1))/2;    % average of left and right pixels
+                end
+            end
+        else                                            % Even Row
+            if(i == rows)
+                up_Cr(i, j) = sub_Cr_dct_reconstructed(x, y);               % Last row of pixels (edge case)
+                up_Cb(i, j) = sub_Cb_dct_reconstructed(x, y);               % Last row of pixels (edge case)
+            else                                                            % 
+                up_Cr(i, j) = (sub_Cr_dct_reconstructed(x, y))/2 + sub_Cr_dct_reconstructed(x+1, y)/2;      % average of pixels above and below
+                up_Cb(i, j) = (sub_Cb_dct_reconstructed(x, y))/2 + sub_Cb_dct_reconstructed(x+1, y)/2;      % average of pixels above and below
+            end
+        end
+        if( mod(j, 2) == 0 ) y = y + 1; end
+    end
+    if( mod(i, 2) == 0 ) x = x + 1; end
+    y = 1;
+end
+
+Reconstructed_RgbImage = cat(3, y_reconstructed, up_Cr, up_Cb);   % This converts
+Reconstructed_RgbImage = ycbcr2rgb(Reconstructed_RgbImage);       % back to RGB
+
+%  This is to display the Y Cb Cr components
 % figure;
 % subplot(2, 2, [1, 2]);
 % imshow(y_reconstructed);
 % subplot(2, 2, 3);
-% imshow(sub_Cr_dct_reconstructed);
+% imshow(up_Cr);
 % subplot(2, 2, 4);
-% imshow(sub_Cb_dct_reconstructed);
+% imshow(up_Cb);
 
 
+%  This is to display the Reconstructed images
+% figure;
+% imshow(Reconstructed_RgbImage);
+% title('Reconstructed Image back to RGB');
 
+%  This is to compare the reconstructed image with the original
+figure;
+subplot(1, 2, 1);
+imshow(Reconstructed_RgbImage);
+title('Reconstructed Image back to RGB');
+subplot(1, 2, 2);
+imshow(rgbImage);
+title('Original RGB Image');
 
-
-% figure;                             % 
-% subplot(2, 2, [1, 2]);              % This code displays the Luminence (Y)
-% imshow(Y);                          % 
-% title('(Y) Luminance');             % 
-% subplot(2, 2, 3);                   % This code displays both the
-% imshow(sub_Cr);                     % 
-% title('Cr 4:2:0 Subsampling');      % Cr and Cb Subsampled bands
-% subplot(2, 2, 4);                   % 
-% imshow(sub_Cb);                     % In one figure
-% title('Cb 4:2:0 Subsampling');      % 
-
-
-% Folder = '.\';
-% File   = 'SubCr.jpg';
-% Img    = sub_Cr;
-% imwrite(Img, fullfile(Folder, File));
-% 
-% Folder = '.\';
-% File   = 'SubCb.jpg';
-% Img    = sub_Cb;
-% imwrite(Img, fullfile(Folder, File));
 
