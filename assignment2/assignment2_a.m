@@ -70,64 +70,21 @@ cb_cr_quantization_matrix = [17 18 24 47 99 99 99 99;
                              99 99 99 99 99 99 99 99;
                              99 99 99 99 99 99 99 99;];
 
+y_dct_show_1 = y_dct(41:48, 1:8);
+y_dct_show_2 = y_dct(41:48, 9:16);
 
+disp('6th Row 1st Block of Y_DCT Coefficients');
+disp(y_dct_show_1);
+disp('6th Row 2nd Block of Y_DCT Coefficients');
+disp(y_dct_show_2);
 
-
-
-
-
-
-
-
-
-%  Decoder
-%  Reconstruct the image by computing Inverse DCT coefficients.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% y_reconstructed = blkproc(y_dct, [8 8], @idct2);
-% %round off
-% y_reconstructed = fix(y_reconstructed);
-% % Convert back to jpeg format
-% y_reconstructed = y_reconstructed + 128;
-% y_reconstructed = uint8(y_reconstructed);
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% sub_Cr_dct_reconstructed = blkproc(sub_Cr_dct, [8 8], @idct2);
-% %round off
-% sub_Cr_dct_reconstructed = fix(sub_Cr_dct_reconstructed);
-% % Convert back to jpeg format
-% sub_Cr_dct_reconstructed = sub_Cr_dct_reconstructed + 128;
-% sub_Cr_dct_reconstructed = uint8(sub_Cr_dct_reconstructed);
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% sub_Cb_dct_reconstructed = blkproc(sub_Cb_dct, [8 8], @idct2);
-% %round off
-% sub_Cb_dct_reconstructed = fix(sub_Cb_dct_reconstructed);
-% % Convert back to jpeg format
-% sub_Cb_dct_reconstructed = sub_Cb_dct_reconstructed + 128;
-% sub_Cb_dct_reconstructed = uint8(sub_Cb_dct_reconstructed);
-
-
-
-% figure;
-% subplot(2, 2, [1, 2]);
-% imshow(y_reconstructed);
-% subplot(2, 2, 3);
-% imshow(sub_Cr_dct_reconstructed);
-% subplot(2, 2, 4);
-% imshow(sub_Cb_dct_reconstructed);
-
-
-
-
-
-% figure;                             % 
-% subplot(2, 2, [1, 2]);              % This code displays the Luminence (Y)
-% imshow(Y);                          % 
-% title('(Y) Luminance');             % 
-% subplot(2, 2, 3);                   % This code displays both the
-% imshow(sub_Cr);                     % 
-% title('Cr 4:2:0 Subsampling');      % Cr and Cb Subsampled bands
-% subplot(2, 2, 4);                   % 
-% imshow(sub_Cb);                     % In one figure
-% title('Cb 4:2:0 Subsampling');      % 
+figure;
+subplot(1, 2, 1);
+imshow(y_dct_show_1);
+title('6th Row 1st Block of Y_DCT');
+subplot(1, 2, 2);
+imshow(y_dct_show_2);
+title('6th Row 2nd Block of Y_DCT');
 
 
 % Folder = '.\';
