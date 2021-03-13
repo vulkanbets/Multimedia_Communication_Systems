@@ -178,8 +178,8 @@ for i = 1:1:rows
     y = 1;
 end
 
-Reconstructed_RgbImage = cat(3, y_reconstructed, up_Cr, up_Cb);   % This converts
-Reconstructed_RgbImage = ycbcr2rgb(Reconstructed_RgbImage);       % back to RGB
+Reconstructed_RgbImage = cat(3, y_reconstructed, up_Cr, up_Cb);   % This converts back to RGB
+Reconstructed_RgbImage = ycbcr2rgb(Reconstructed_RgbImage);
 
 %  This is to display the Y Cb Cr components
 % figure;
@@ -197,12 +197,19 @@ Reconstructed_RgbImage = ycbcr2rgb(Reconstructed_RgbImage);       % back to RGB
 % title('Reconstructed Image back to RGB');
 
 %  This is to compare the reconstructed image with the original
-figure;
-subplot(1, 2, 1);
-imshow(Reconstructed_RgbImage);
-title('Reconstructed Image back to RGB');
-subplot(1, 2, 2);
-imshow(rgbImage);
-title('Original RGB Image');
+% figure;
+% subplot(1, 2, 1);
+% imshow(Reconstructed_RgbImage);
+% title('Reconstructed Image back to RGB');
+% subplot(1, 2, 2);
+% imshow(rgbImage);
+% title('Original RGB Image');
+
+%  This is to display the error image
+% error_image = imsubtract(rgbImage, Reconstructed_RgbImage)
+% figure;
+% imshow(error_image);
+% title('Error Image');
+
 
 
