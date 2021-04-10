@@ -15,7 +15,7 @@ for m=6:6
     macro_blocks = mat2cell(target_frame_y, [16 16 16 16 16 16 16 16 16], [16 16 16 16 16 16 16 16 16 16 16]);
     
     
-    x = 1;     % Max is 11  Macroblock index
+    x = 11;     % Max is 11  Macroblock index
     y = 1;      % Max is 9  Macroblock index
     if(x == 1) x_left_direction = 0; else x_left_direction = 8; end
     if(x == 11) x_right_direction = 0; else x_right_direction = 8; end
@@ -27,9 +27,9 @@ for m=6:6
     search_y = ((y-1)*16) + 1 - y_up_direction;
     search_y_end = ((y-1)*16) + 16 + y_down_direction;
     
-    % This dynamically sets the boundaries for the search window in the reference frame depending on where the macroblock is
+    % This dynamically sets the boundaries for the search window in the !!!reference!!! frame depending on where the macroblock is
     search_window = target_frame_y(search_y:search_y_end, search_x:search_x_end);
-    % This dynamically sets the boundaries for the search window in the reference frame depending on where the macroblock is
+    % This dynamically sets the boundaries for the search window in the !!!reference!!! frame depending on where the macroblock is
     
     % The extracted macro block from the target frame and the x and y coordinates
     MB = macro_blocks{y, x};
@@ -38,13 +38,20 @@ for m=6:6
     % The extracted macro block from the target frame and the x and y coordinates
     
     
+    
+    
     for i=1:length(search_window(1,:)) - 15
         for j=1:length(search_window(:,1)) - 15
-            temp = cat(3, MB, search_window(i:i+15, j:j+15))
+            overlay = cat(3, MB, search_window(j:j+15, i:i+15));
+            if( overlay(:,:,1) == overlay(:,:,2) )
+                i
+                j
+                overlay(:,:,1)
+                overlay(:,:,2)
+            end
+            
         end
     end
-    
-    
     
     
     
