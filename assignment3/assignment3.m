@@ -38,9 +38,9 @@ for m=6:6
     % The extracted macro block from the target frame and the x and y coordinates
     
     
-    for i=1:length(search_window(1,:))
-        for j=1:length(search_window(:,1))
-            temp = cat(3, MB, search_window(j:j+15, i:i+15));
+    for i=1:length(search_window(1,:)) - 15
+        for j=1:length(search_window(:,1)) - 15
+            temp = cat(3, MB, search_window(i:i+15, j:j+15))
         end
     end
     
