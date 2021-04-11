@@ -15,8 +15,9 @@ for m=6:6
     macro_blocks = mat2cell(target_frame_y, [16 16 16 16 16 16 16 16 16], [16 16 16 16 16 16 16 16 16 16 16]);
     
     
-    x = 11;     % Max is 11  Macroblock index
-    y = 1;      % Max is 9  Macroblock index
+    % Beginning of for loop
+    x = 7;     % Max is 11  Macroblock index
+    y = 5;      % Max is 9  Macroblock index
     if(x == 1) x_left_direction = 0; else x_left_direction = 8; end
     if(x == 11) x_right_direction = 0; else x_right_direction = 8; end
     if(y == 1) y_up_direction = 0; else y_up_direction = 8; end
@@ -28,7 +29,7 @@ for m=6:6
     search_y_end = ((y-1)*16) + 16 + y_down_direction;
     
     % This dynamically sets the boundaries for the search window in the !!!reference!!! frame depending on where the macroblock is
-    search_window = target_frame_y(search_y:search_y_end, search_x:search_x_end);
+    search_window = reference_frame_y(search_y:search_y_end, search_x:search_x_end);
     % This dynamically sets the boundaries for the search window in the !!!reference!!! frame depending on where the macroblock is
     
     % The extracted macro block from the target frame and the x and y coordinates
@@ -38,36 +39,38 @@ for m=6:6
     % The extracted macro block from the target frame and the x and y coordinates
     
     
-    
-    
+    % Determine the Best Match Macroblock
+    min_SAD = inf;
     for i=1:length(search_window(1,:)) - 15
         for j=1:length(search_window(:,1)) - 15
             overlay = cat(3, MB, search_window(j:j+15, i:i+15));
-            if( overlay(:,:,1) == overlay(:,:,2) )
-                i
-                j
-                overlay(:,:,1)
-                overlay(:,:,2)
+            difference_matrix = overlay(:,:,2) - overlay(:,:,1);
+            cur_SAD = abs( sum( difference_matrix(:) ) );
+            if(cur_SAD < min_SAD)
+                min_SAD = cur_SAD;
             end
-            
         end
     end
+    % Determine the Best Match Macroblock
     
     
     
     
     
     
-    figure();
-    imshow(MB);
-    title('Current Macro Block');
-    figure();
-    imshow(search_window);
-    title('Search Window of Reference Frame');
-    figure();
-    imshow(target_frame_y);
-    title('Entire Target Frame');
+%     figure();
+%     imshow(difference_matrix);
+%     title('Difference Matrix');
     
+%     figure();
+%     imshow(MB);
+%     title('Current Macro Block');
+%     figure();
+%     imshow(search_window);
+%     title('Search Window of Reference Frame');
+%     figure();
+%     imshow(target_frame_y);
+%     title('Entire Target Frame');
     
 end
 
