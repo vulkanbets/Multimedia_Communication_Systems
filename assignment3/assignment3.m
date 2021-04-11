@@ -4,7 +4,7 @@ close all
 
 video_frames = VideoReader('walk_qcif.avi');
 
-for m=6:6
+for m=6:10
     if(m == 6) reference_frame = read(video_frames, m);
     else reference_frame = target_frame; end
     target_frame = read(video_frames, m + 1);
@@ -16,10 +16,10 @@ for m=6:6
     macro_blocks = mat2cell(target_frame_y, [16 16 16 16 16 16 16 16 16], [16 16 16 16 16 16 16 16 16 16 16]);
     % Divide the target frame into 16x16 Macro Blocks
     
-%     x1_matrix = [];
-%     x2_matrix = [];
-%     y1_matrix = [];
-%     y2_matrix = [];
+    x1_matrix = [];
+    x2_matrix = [];
+    y1_matrix = [];
+    y2_matrix = [];
     error_frame = zeros(144, 176, 'uint8');
     for y=1:9
         for x=1:11
@@ -62,12 +62,12 @@ for m=6:6
                 end
             end
             % Determine the Best Match Macroblock
-%             x_value = center_x - u;
-%             y_value = center_y - v;
-%             x1_matrix = [x1_matrix, MB_x];
-%             x2_matrix = [x2_matrix, x_value];
-%             y1_matrix = [y1_matrix, MB_y];
-%             y2_matrix = [y2_matrix, y_value];
+            x_value = center_x - u;
+            y_value = center_y - v;
+            x1_matrix = [x1_matrix, MB_x];
+            x2_matrix = [x2_matrix, x_value];
+            y1_matrix = [y1_matrix, MB_y];
+            y2_matrix = [y2_matrix, y_value];
             
             % Best Match Macro Block
             best_match_macro_block = search_window(v:v+15, u:u+15);
@@ -83,29 +83,26 @@ for m=6:6
         end
     end
     
-    
-    figure();
-    imshow(error_frame);
-    title('Error Frame');
-    
-    % Reconstruct the Frame
-    reconstructed_frame = error_frame + reference_frame_y;
-    % Reconstruct the Frame
-    
-    figure();
-    imshow(reconstructed_frame);
-    title('Reconstructed Frame');
-    
-    
-%     
-%     
-%     figure();
-%     quiver(x1_matrix, y1_matrix, x2_matrix, y2_matrix);
-%     title('Quiver Plots');
+    if(m==8)
+        figure();
+        quiver(x1_matrix, y1_matrix, x2_matrix, y2_matrix, 0.5);
+        title('Motion Vectors Frame');
+
+        figure();
+        imshow(error_frame);
+        title('Error Frame');
+
+        % Reconstruct the Frame
+        reconstructed_frame = error_frame + reference_frame_y;
+        % Reconstruct the Frame
+
+        figure();
+        imshow(target_frame_y);
+        title('Target Frame');
+
+        figure();
+        imshow(reconstructed_frame);
+        title('Reconstructed Frame');
+    end
 end
-
-
-
-
-
 
