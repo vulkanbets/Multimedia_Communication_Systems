@@ -68,42 +68,51 @@ for m=6:6
 %             y1_matrix = [y1_matrix, MB_y];
 %             y2_matrix = [y2_matrix, y_value];
             
+            % Best Match Macro Block
             best_match_macro_block = search_window(v:v+15, u:u+15);
+            % Best Match Macro Block
             
-            if(x == 11 && y == 1) % (x) max = 11 (y) max = 9
+            % Error Macro Block
+            error_macro_block = MB - best_match_macro_block;
+            % Error Macro Block
+            
+            % Append to Error Frame
+            
+            % Append to Error Frame
+            
+            if(x == 5 && y == 5) % (x) max = 11 (y) max = 9
                 figure();
                 imshow(MB);
                 title('Current Macro Block');
-            end
-            
-            if(x == 11 && y == 1) % (x) max = 11 (y) max = 9
+                
                 figure();
                 imshow(best_match_macro_block);
                 title('Best Match Macro Block');
+                
+%                 figure();
+%                 imshow(search_window);
+%                 title('Search Window of Reference Frame');
+                
+                figure();
+                imshow(error_macro_block);
+                title('Error Macro Block');
             end
+            
+            
             
         end
     end
     
-    
-%     figure();
-%     imshow(difference_matrix);
-%     title('Difference Matrix');
-    
-
-%     figure();
-%     imshow(search_window);
-%     title('Search Window of Reference Frame');
-    
-    
+%     
+%     
 %     figure();
 %     imshow(reference_frame_y);
 %     title('Reference Frame');
 %     figure();
 %     imshow(target_frame_y);
 %     title('Target Frame');
-
-
+%     
+%     
 %     figure();
 %     quiver(x1_matrix, y1_matrix, x2_matrix, y2_matrix);
 %     title('Quiver Plots');
