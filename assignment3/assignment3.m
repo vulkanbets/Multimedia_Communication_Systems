@@ -3,10 +3,6 @@ clear all
 close all
 
 video_frames = VideoReader('walk_qcif.avi');
-x1_matrix = [];
-x2_matrix = [];
-y1_matrix = [];
-y2_matrix = [];
 
 for m=6:6
     if(m == 6) reference_frame = read(video_frames, m);
@@ -16,9 +12,14 @@ for m=6:6
     reference_frame_y = reference_frame(:,:,1);
     target_frame_y = target_frame(:,:,1);
     
+    % Divide the target frame into 16x16 Macro Blocks
     macro_blocks = mat2cell(target_frame_y, [16 16 16 16 16 16 16 16 16], [16 16 16 16 16 16 16 16 16 16 16]);
+    % Divide the target frame into 16x16 Macro Blocks
     
-    
+%     x1_matrix = [];
+%     x2_matrix = [];
+%     y1_matrix = [];
+%     y2_matrix = [];
     for y=1:9
         for x=1:11
             if(x == 1) x_left_direction = 0; else x_left_direction = 8; end
@@ -42,6 +43,7 @@ for m=6:6
             % The extracted macro block from the target frame and the x and y coordinates
             
             
+            
             % Determine the Best Match Macroblock
             center_x = x_left_direction + 1;
             center_y = y_up_direction + 1;
@@ -59,12 +61,27 @@ for m=6:6
                 end
             end
             % Determine the Best Match Macroblock
-            x_value = u - center_x;
-            y_value = v - center_y;
-            x1_matrix = [x1_matrix, x+2];
-            x2_matrix = [x2_matrix, x+1];
-            y1_matrix = [y1_matrix, y+2];
-            y2_matrix = [y2_matrix, y+1];
+%             x_value = center_x - u;
+%             y_value = center_y - v;
+%             x1_matrix = [x1_matrix, MB_x];
+%             x2_matrix = [x2_matrix, x_value];
+%             y1_matrix = [y1_matrix, MB_y];
+%             y2_matrix = [y2_matrix, y_value];
+            
+            best_match_macro_block = search_window(v:v+15, u:u+15);
+            
+            if(x == 6 && y == 4)
+                figure();
+                imshow(MB);
+                title('Current Macro Block');
+            end
+            
+            if(x == 6 && y == 4)
+                figure();
+                imshow(best_match_macro_block);
+                title('Best Match Macro Block');
+            end
+            
         end
     end
     
@@ -73,19 +90,23 @@ for m=6:6
 %     imshow(difference_matrix);
 %     title('Difference Matrix');
     
-%     figure();
-%     imshow(MB);
-%     title('Current Macro Block');
+
 %     figure();
 %     imshow(search_window);
 %     title('Search Window of Reference Frame');
+    
+    
+%     figure();
+%     imshow(reference_frame_y);
+%     title('Reference Frame');
 %     figure();
 %     imshow(target_frame_y);
-%     title('Entire Target Frame');
+%     title('Target Frame');
 
-    figure();
-    quiver(x1_matrix, y1_matrix, x2_matrix, y2_matrix, 6);
-    title('Quiver Plots');
+
+%     figure();
+%     quiver(x1_matrix, y1_matrix, x2_matrix, y2_matrix);
+%     title('Quiver Plots');
 end
 
 
