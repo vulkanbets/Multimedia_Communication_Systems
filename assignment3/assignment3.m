@@ -15,8 +15,8 @@ for m=6:6
     macro_blocks = mat2cell(target_frame_y, [16 16 16 16 16 16 16 16 16], [16 16 16 16 16 16 16 16 16 16 16]);
     
     
-    for x=1:11
-        for y=1:9
+    for y=1:9
+        for x=1:11
             if(x == 1) x_left_direction = 0; else x_left_direction = 8; end
             if(x == 11) x_right_direction = 0; else x_right_direction = 8; end
             if(y == 1) y_up_direction = 0; else y_up_direction = 8; end
@@ -39,6 +39,10 @@ for m=6:6
             
             
             % Determine the Best Match Macroblock
+            x
+            y
+            center_x = x_left_direction + 1
+            center_y = y_up_direction + 1
             min_SAD = inf;
             for i=1:length(search_window(1,:)) - 15
                 for j=1:length(search_window(:,1)) - 15
@@ -49,6 +53,7 @@ for m=6:6
                         min_SAD = cur_SAD;
                         u = i;
                         v = j;
+                        
                     end
                 end
             end
