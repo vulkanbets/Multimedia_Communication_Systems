@@ -70,13 +70,13 @@ for m=6:6
             
             best_match_macro_block = search_window(v:v+15, u:u+15);
             
-            if(x == 6 && y == 4)
+            if(x == 11 && y == 1) % (x) max = 11 (y) max = 9
                 figure();
                 imshow(MB);
                 title('Current Macro Block');
             end
             
-            if(x == 6 && y == 4)
+            if(x == 11 && y == 1) % (x) max = 11 (y) max = 9
                 figure();
                 imshow(best_match_macro_block);
                 title('Best Match Macro Block');
