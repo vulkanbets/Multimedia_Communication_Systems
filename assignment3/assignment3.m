@@ -59,10 +59,10 @@ for m=6:6
                 end
             end
             % Determine the Best Match Macroblock
-            x1_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = center_x;
-            x2_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = u;
-            y1_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = center_y;
-            y2_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = v;
+            x1_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = center_x + ((x-1)*16);
+            x2_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = u + ((x-1)*16);
+            y1_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = center_y + ((y-1)*16);
+            y2_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1  ) = v + ((y-1)*16);
         end
     end
     
@@ -80,10 +80,13 @@ for m=6:6
 %     figure();
 %     imshow(target_frame_y);
 %     title('Entire Target Frame');
-    
+
+%     figure();
+%     quiver(x1_matrix, y1_matrix, x2_matrix, y2_matrix, 5);
+%     title('Quiver Plots');
 end
 
-quiver(x1_matrix, y1_matrix, x2_matrix, y2_matrix);
+
 
 
 
