@@ -20,6 +20,7 @@ for m=6:6
 %     x2_matrix = [];
 %     y1_matrix = [];
 %     y2_matrix = [];
+    error_frame = zeros(144, 176, 'uint8');
     for y=1:9
         for x=1:11
             if(x == 1) x_left_direction = 0; else x_left_direction = 8; end
@@ -77,40 +78,25 @@ for m=6:6
             % Error Macro Block
             
             % Append to Error Frame
-            
+            error_frame((y-1)*16 + 1:(y-1)*16 + 16, (x-1)*16 + 1:(x-1)*16 + 16) = error_macro_block;
             % Append to Error Frame
-            
-            if(x == 5 && y == 5) % (x) max = 11 (y) max = 9
-                figure();
-                imshow(MB);
-                title('Current Macro Block');
-                
-                figure();
-                imshow(best_match_macro_block);
-                title('Best Match Macro Block');
-                
-%                 figure();
-%                 imshow(search_window);
-%                 title('Search Window of Reference Frame');
-                
-                figure();
-                imshow(error_macro_block);
-                title('Error Macro Block');
-            end
-            
-            
-            
         end
     end
     
-%     
-%     
-%     figure();
-%     imshow(reference_frame_y);
-%     title('Reference Frame');
-%     figure();
-%     imshow(target_frame_y);
-%     title('Target Frame');
+    
+    figure();
+    imshow(error_frame);
+    title('Error Frame');
+    
+    % Reconstruct the Frame
+    reconstructed_frame = error_frame + reference_frame_y;
+    % Reconstruct the Frame
+    
+    figure();
+    imshow(reconstructed_frame);
+    title('Reconstructed Frame');
+    
+    
 %     
 %     
 %     figure();
