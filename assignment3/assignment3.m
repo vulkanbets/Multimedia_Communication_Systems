@@ -3,10 +3,10 @@ clear all
 close all
 
 video_frames = VideoReader('walk_qcif.avi');
-x1_matrix = zeros(144, 176, 'uint8');
-x2_matrix = zeros(144, 176, 'uint8');
-y1_matrix = zeros(144, 176, 'uint8');
-y2_matrix = zeros(144, 176, 'uint8');
+x1_matrix = [];
+x2_matrix = [];
+y1_matrix = [];
+y2_matrix = [];
 
 for m=6:6
     if(m == 6) reference_frame = read(video_frames, m);
@@ -59,10 +59,12 @@ for m=6:6
                 end
             end
             % Determine the Best Match Macroblock
-            x1_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = center_x + ((x-1)*16);
-            x2_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = u + ((x-1)*16);
-            y1_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = center_y + ((y-1)*16);
-            y2_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1  ) = v + ((y-1)*16);
+            x_value = u - center_x;
+            y_value = v - center_y;
+            x1_matrix = [x1_matrix, x+2];
+            x2_matrix = [x2_matrix, x+1];
+            y1_matrix = [y1_matrix, y+2];
+            y2_matrix = [y2_matrix, y+1];
         end
     end
     
@@ -81,9 +83,9 @@ for m=6:6
 %     imshow(target_frame_y);
 %     title('Entire Target Frame');
 
-%     figure();
-%     quiver(x1_matrix, y1_matrix, x2_matrix, y2_matrix, 5);
-%     title('Quiver Plots');
+    figure();
+    quiver(x1_matrix, y1_matrix, x2_matrix, y2_matrix, 6);
+    title('Quiver Plots');
 end
 
 
