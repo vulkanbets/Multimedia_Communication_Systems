@@ -3,6 +3,10 @@ clear all
 close all
 
 video_frames = VideoReader('walk_qcif.avi');
+x1_matrix = zeros(144, 176, 'uint8');
+x2_matrix = zeros(144, 176, 'uint8');
+y1_matrix = zeros(144, 176, 'uint8');
+y2_matrix = zeros(144, 176, 'uint8');
 
 for m=6:6
     if(m == 6) reference_frame = read(video_frames, m);
@@ -39,10 +43,8 @@ for m=6:6
             
             
             % Determine the Best Match Macroblock
-            x
-            y
-            center_x = x_left_direction + 1
-            center_y = y_up_direction + 1
+            center_x = x_left_direction + 1;
+            center_y = y_up_direction + 1;
             min_SAD = inf;
             for i=1:length(search_window(1,:)) - 15
                 for j=1:length(search_window(:,1)) - 15
@@ -53,17 +55,16 @@ for m=6:6
                         min_SAD = cur_SAD;
                         u = i;
                         v = j;
-                        
                     end
                 end
             end
             % Determine the Best Match Macroblock
-            
+            x1_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = center_x;
+            x2_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = u;
+            y1_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = center_y;
+            y2_matrix( ((y-1)*16) + 1, ((x-1)*16) + 1 ) = v;
         end
     end
-    
-    
-    
     
     
 %     figure();
@@ -82,6 +83,7 @@ for m=6:6
     
 end
 
+quiver(x1_matrix, y1_matrix, x2_matrix, y2_matrix);
 
 
 
